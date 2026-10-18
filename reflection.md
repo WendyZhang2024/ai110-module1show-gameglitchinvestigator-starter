@@ -7,16 +7,20 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - What did the game look like the first time you ran it?
 - List at least two concrete bugs you noticed at the start  
   (for example: "the hints were backwards").
+  1. *Reversed High/Low Logic*: The game gives the completely opposite hint. For example, guessing the minimum value (1) returns "Go LOWER!", and guessing a higher value (e.g., 35 when the target is 2) returns "Go HIGHER!". This makes it impossible to narrow down the correct number using logic.
+  2. *Incorrect Score Calculation*: After making only two guesses (35, then 2) and winning the game, the final score was inexplicably 65. It seems the score is derived from the guessed number itself rather than the number of attempts or logic.
+  3. *New Game State Issue*: After winning a game and clicking the "New Game" button, entering a new number and clicking "Submit" does nothing. The page requires a manual browser refresh to reset the game state properly.
 
 **Bug Reproduction Log**
 
 Document at least 3 bugs you found. Add rows as needed.
 
-| Input | Expected Behavior | Actual Behavior | Console Output / Error |
-|-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| Input Used | Expected Behavior | Actual Behavior | Console Error / Output | Suspected Code Location |
+| :--- | :--- | :--- | :--- | :--- |
+| `1` (Target > 1) | "Go HIGHER!" | "Go LOWER!" | none | `logic_utils.py` -> `check_guess()` |
+| `35` (Target is 2) | "Go LOWER!" | "Go HIGHER!" | none | `logic_utils.py` -> `check_guess()` |
+| `35`, then `2` | High score (e.g., 90+) | Final score: 65 | none | `app.py` (score update logic) |
+| Click "New Game" after win | Reset game, allow new guesses | Page doesn't respond; requires refresh | none | `app.py` (session state reset logic) |
 
 ---
 

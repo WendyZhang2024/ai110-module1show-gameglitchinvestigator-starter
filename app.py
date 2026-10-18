@@ -28,6 +28,15 @@ low, high = get_range_for_difficulty(difficulty)
 st.sidebar.caption(f"Range: {low} to {high}")
 st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 
+# --- Feature Expansion: Guess History Sidebar ---
+st.sidebar.divider()
+st.sidebar.subheader("📜 Guess History")
+if "history" in st.session_state and st.session_state.history:
+    for idx, past_guess in enumerate(st.session_state.history):
+        st.sidebar.text(f"Attempt {idx+1}: {past_guess}")
+else:
+    st.sidebar.text("No guesses yet.")
+
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
@@ -92,7 +101,7 @@ if submit:
 
     if not ok:
         st.session_state.history.append(raw_guess)
-        st.error(err)
+        st.error(f"❌ {err}")
     else:
         st.session_state.history.append(guess_int)
         
@@ -100,7 +109,12 @@ if submit:
         outcome, message = check_guess(guess_int, st.session_state.secret)
 
         if show_hint:
-            st.warning(message)
+            if outcome == "Win":
+                st.success(message)
+            elif outcome == "Too High":
+                st.error(message)
+            else:
+                st.warning(message)
 
         # FIXED: Use the updated scoring logic from logic_utils
         st.session_state.score = update_score(

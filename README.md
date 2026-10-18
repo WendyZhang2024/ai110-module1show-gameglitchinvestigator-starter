@@ -68,4 +68,8 @@ tests\test_game_logic.py ......                                                [
 
 ## 🚀 Stretch Features
 
-- [ ] [If you choose to complete Challenge 4, describe the Enhanced UI changes here — a screenshot is optional]
+- [x] **Challenge 1: Advanced Edge-Case Testing** - Added `pytest` cases to strictly reject decimals (e.g., `46.4`) and non-numeric strings to prevent false wins.
+- [x] **Challenge 2: Feature Expansion** - Added a dynamic "Guess History" sidebar that tracks all valid and invalid guesses using `st.session_state`.
+- [x] **Challenge 3: Professional Documentation** - Added Google-style docstrings and type hints to all functions in `logic_utils.py`.
+- [x] **Challenge 4: Enhanced Game UI** - Implemented color-coded hints for better user experience (see description below).
+- [x] **Challenge 5: AI Model Comparison** - Documented the comparison between GitHub Copilot and Deepseek in `ai_interactions.md`.

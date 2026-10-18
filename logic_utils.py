@@ -21,12 +21,13 @@ def parse_guess(raw: str):
 def check_guess(guess, secret):
     if guess == secret:
         return "Win", "🎉 Correct!"
+    # FIX: Collaborated with AI to identify and reverse the contradictory hints
     if guess > secret:
         return "Too High", "📉 Go LOWER!"  
     return "Too Low", "📈 Go HIGHER!"      
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
-    
+    # FIX: Refactored score logic with AI to remove arbitrary +/- 5 point jumps
     if outcome == "Win":
         points = max(10, 100 - (attempt_number - 1) * 10)
         return current_score + points

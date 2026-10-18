@@ -26,30 +26,28 @@ Document at least 3 bugs you found. Add rows as needed.
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion you did not accept as written (including what the AI suggested, why you rejected or changed it, and how you verified your version). It does not have to be a suggestion that was wrong: over-engineered, out of scope, harder to read, or a poor fit for this codebase all count.
+- **AI tools used**: I used Copilot  and Deepseek as my pair programmers throughout this project.
+- **Correct AI Suggestion**: The AI correctly suggested that my `app.py` still contained redundant functions that were overriding the newly refactored functions in `logic_utils.py`. This "ghost code" was why the high/low hint bugs persisted even after I thought I fixed them. I verified this by deleting the old functions from `app.py`, restarting the Streamlit app, and confirming that the hints finally worked correctly.
+- **AI Suggestion I Rejected**: The AI initially suggested adding complex `try-except TypeError` blocks inside the `check_guess` function to handle string inputs. I rejected this because it was over-engineered and mixed UI concerns with core game logic. Instead, I modified the approach to strictly validate inputs in the `parse_guess` function using `value.is_integer()`. I verified my version by writing a new `pytest` test case (`test_parse_guess_edge_cases`) to ensure that decimal inputs like `"22.3"` were correctly rejected before reaching the game logic.
 
 ---
 
 ## 3. Debugging and testing your fixes
 
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
+- **How I decided a bug was fixed**: I decided a bug was fixed only if it passed both automated `pytest` tests and manual UI testing in the browser.
+- **Test I ran**: For example, I ran a new test, `test_parse_guess_edge_cases`, to specifically check if the code correctly rejected decimal inputs like `"42.5"`. This test showed me that the AI's suggestion to use `value.is_integer()` successfully prevented the game from truncating decimals and falsely declaring a win.
+- **How AI helped**: AI helped me design this test by pointing out the decimal truncation edge case in the first place, which prompted me to write a dedicated test to lock in that specific behavior.
 
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+- Streamlit "reruns" means that every time a user interacts with a widget (like clicking a button), the entire Python script runs from top to bottom again. To prevent game variables (like the secret number and score) from resetting on every click, we use `st.session_state`. You can think of `st.session_state` as a persistent backpack; variables stored inside it are remembered across reruns. Understanding this was crucial for fixing the "New Game" freeze bug, as I needed to explicitly reset all session state variables to start a fresh game.
 
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+- **Habit to reuse**: One habit I will definitely reuse is writing `pytest` test cases during debugging, rather than just relying on clicking around the UI. It forces me to define exactly what "correct" behavior looks like.
+- **What I would do differently**: Next time I work with AI, I will ask the AI to show me explicit `diff` previews of its code changes before applying them. During this project, I learned that AI can leave behind redundant "ghost code" that silently overrides new logic.
+- **How my thinking changed**: I learned that sometimes AI makes mistakes very confidently. It created a `check_guess` function that seemed completely logical at first glance, but was fundamentally backwards. 

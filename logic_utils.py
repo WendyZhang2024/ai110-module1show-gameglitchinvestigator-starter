@@ -13,9 +13,9 @@ def parse_guess(raw: str):
     if raw is None or raw == "":
         return False, None, "Enter a guess."
     try:
-        value = int(float(raw))
-    except Exception:
-        return False, None, "That is not a number."
+        value = int(raw)
+    except ValueError:
+        return False, None, "Please enter a valid integer."
     return True, value, None
 
 def check_guess(guess, secret):

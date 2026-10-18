@@ -16,13 +16,22 @@ def test_guess_too_low():
     assert result == ("Too Low", "📈 Go HIGHER!")
 
 def test_parse_guess_valid():
-    # Test valid string inputs (integer and float format)
+    # Only integer-formatted input is valid.
     assert parse_guess("50") == (True, 50, None)
-    assert parse_guess("50.0") == (True, 50, None)
 
 def test_parse_guess_invalid():
-    # Test invalid string input
+    # Test invalid string and fractional numeric inputs.
     assert parse_guess("abc")[0] == False
+    assert parse_guess("22.3") == (
+        False,
+        None,
+        "Please enter a valid integer.",
+    )
+    assert parse_guess("22.0") == (
+        False,
+        None,
+        "Please enter a valid integer.",
+    )
 
 def test_update_score():
     # Test score calculation: winning on the first attempt gives 100 points
